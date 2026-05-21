@@ -169,7 +169,13 @@ export default {
           function MainApplication() {
             const [view, setView] = useState(INITIAL_TAB);
             const [callouts, setCallouts] = useState(true);
-            const [authed, setAuthed] = useState(!IS_ADMIN_URL);
+            
+            // 🛠️ FIX 1: Hydrate auth state dynamically from sessionStorage so reloads don't break it
+            const [authed, setAuthed] = useState(() => {
+              if (!IS_ADMIN_URL) return true;
+              return sessionStorage.getItem("acme_admin_authenticated") === "true";
+            });
+            
             const [email, setEmail] = useState("");
             const [denied, setDenied] = useState(false);
 
@@ -181,7 +187,6 @@ export default {
             const [secEvents, setSecEvents] = useState([]);
             const [simulating, setSimulating] = useState(false);
 
-            // ✨ SECURE DYNAMIC DATA MASKING HELPER (Hides everything except the last character/digit)
             const maskGovId = (id) => {
               if (!id) return "—";
               const str = id.toString().trim();
@@ -231,7 +236,10 @@ export default {
 
             const handleAccessVerify = () => {
               if (email.trim().toLowerCase().endsWith("@" + BASE_DOMAIN_NAME)) {
-                setAuthed(true); setDenied(false);
+                // 🛠️ FIX 2: Commit auth token to sessionStorage so it survives the form 302 rewrite round-trip
+                sessionStorage.setItem("acme_admin_authenticated", "true");
+                setAuthed(true); 
+                setDenied(false);
               } else { setDenied(true); }
             };
 
@@ -513,7 +521,7 @@ export default {
                             <div className="pops">
                               {Array.from({ length: 48 }).map((_, i) => <span className="pop" key={i} />)}
                             </div>
-                            <p style={{fontSize:12, color:"var(--muted)", marginTop:15, textAlign:"left"}}>Workers execute logic directly inside border router memories worldwide. Intelligent path optimization steers dynamic infrastructure connections between nodes instantly.</p>
+                            <p style={{fontSize:12, color(--muted)", marginTop:15, textAlign:"left"}}>Workers execute logic directly inside border router memories worldwide. Intelligent path optimization steers dynamic infrastructure connections between nodes instantly.</p>
                           </div>
 
                           <div className="card pad" style={{textAlign:"left"}}>
