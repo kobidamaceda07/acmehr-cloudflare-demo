@@ -2,10 +2,10 @@ name: Deploy Multi-Tenant Stack
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # ✨ This adds a manual trigger button with a dropdown selection menu!
+  workflow_dispatch:
     inputs:
       tenant:
-        description: 'Select the destination Cloudflare Tenant target:'
+        description: 'Select Destination Cloudflare Tenant:'
         required: true
         default: 'maceda'
         type: choice
@@ -14,25 +14,37 @@ on:
           - tan
 
 jobs:
-  deploy:
+  # 🌐 AUTOMATION TASK A: DEPLOYS TO KOBIMACEDA.COM
+  deploy-maceda:
+    if: ${{ github.event.inputs.tenant == 'maceda' || github.event.inputs.tenant == '' }}
     runs-on: ubuntu-latest
-    
-    # Dynamically switches vaults based on your dropdown selection or fallback push
-    environment: ${{ github.event.inputs.tenant || 'maceda' }}-production
-    
+    environment: maceda-production
     steps:
       - uses: actions/checkout@v4
-      
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          
       - run: npm install
-      
-      - name: Publish to Selected Cloudflare Edge Instance
+      - name: Push to Mace Account Edge
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # Pass the execution environment profile flag directly down to wrangler
-          command: deploy ${{ (github.event.inputs.tenant == 'tan' || (github.event.inputs.tenant == '' && contains(github.event.head_commit.message, 'deploy-tan'))) && '--env tan' || '' }}
+
+  # 🧪 AUTOMATION TASK B: DEPLOYS TO KOBITAN.WORK
+  deploy-tan:
+    if: ${{ github.event.inputs.tenant == 'tan' }}
+    runs-on: ubuntu-latest
+    environment: tan-production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - name: Push to Tan Account Edge
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env tan
