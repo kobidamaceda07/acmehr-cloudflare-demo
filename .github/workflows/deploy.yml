@@ -13,6 +13,10 @@ on:
           - maceda
           - tan
 
+# ✨ Suppresses the warning and forces the GitHub runner to use the Node 24 architecture safely
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   # 🌐 AUTOMATION TASK A: DEPLOYS TO KOBIMACEDA.COM
   deploy-maceda:
@@ -23,7 +27,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24 # 🔥 Upgraded engine context to Node 24
       - run: npm install
       - name: Push to Mace Account Edge
         uses: cloudflare/wrangler-action@v3
@@ -40,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24 # 🔥 Upgraded engine context to Node 24
       - run: npm install
       - name: Push to Tan Account Edge
         uses: cloudflare/wrangler-action@v3
