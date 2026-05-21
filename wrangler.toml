@@ -1,0 +1,10 @@
+name = "acmehr-chatbot"
+main = "src/index.js"
+compatibility_date = "2026-05-21"
+
+[[routes]]
+pattern = "hr.kobimaceda.com/*"
+zone_name = "kobimaceda.com"
+
+[ai]
+binding = "AI"
