@@ -164,12 +164,6 @@ export default {
           const IS_ADMIN_URL = ${isAdminRoutingPath};
           const INITIAL_TAB = IS_ADMIN_URL ? "admin" : "dashboard";
 
-          const MOCK_EMPLOYEES = [
-            { name: "Maria Santos", role: "People Ops", email: "maria.santos@" + BASE_DOMAIN_NAME, gov_id: "•••-••-4821", status: "Active" },
-            { name: "James Tan", role: "Engineering", email: "james.tan@" + BASE_DOMAIN_NAME, gov_id: "•••-••-1190", status: "Active" },
-            { name: "Aisha Rahman", role: "Finance", email: "aisha.r@" + BASE_DOMAIN_NAME, gov_id: "•••-••-7732", status: "On leave" }
-          ];
-
           const REAL_DB_RECORDS = ${JSON.stringify(liveDbEmployees)};
 
           function MainApplication() {
@@ -186,6 +180,14 @@ export default {
 
             const [secEvents, setSecEvents] = useState([]);
             const [simulating, setSimulating] = useState(false);
+
+            // ✨ SECURE DYNAMIC DATA MASKING HELPER (Hides everything except the last character/digit)
+            const maskGovId = (id) => {
+              if (!id) return "—";
+              const str = id.toString().trim();
+              if (str.length <= 1) return str;
+              return "•".repeat(str.length - 1) + str.slice(-1);
+            };
 
             const addLog = (label, detail, model, tokens, cost, lat, tag) => {
               setLogs(l => [{ id: Math.random(), time: new Date().toLocaleTimeString([], { hour12: false }), label, detail, model, tokens, cost, lat, tag }, ...l]);
@@ -262,7 +264,6 @@ export default {
                     <div className="navhead">Protect Tier</div>
                     <button className={"nav " + (view === "askhr" ? "on" : "")} onClick={() => setView("askhr")}><i data-lucide="bot"></i> AskHR Assistant</button>
                     
-                    {/* 🚀 IDENTITY RESOLVING RE-ROUTING ACTION TRIGGER */}
                     <button 
                       className={"nav " + (view === "admin" ? "on" : "")} 
                       onClick={() => {
@@ -289,7 +290,7 @@ export default {
                         <h1 className="page disp">Welcome back, Kobi</h1>
                         <div className="sub">Serverless application environment processing live request streams across global edge networks.</div>
                         <div className="grid g4">
-                          <div className="card pad kpi"><i data-lucide="users" style={{color:"var(--cf2)"}}></i><span className="v disp">{REAL_DB_RECORDS.length + 3}</span><span className="l">Total Tracked Staff</span></div>
+                          <div className="card pad kpi"><i data-lucide="users" style={{color:"var(--cf2)"}}></i><span className="v disp">{REAL_DB_RECORDS.length}</span><span className="l">Total Tracked Staff</span></div>
                           <div className="card pad kpi"><i data-lucide="wallet" style={{color:"var(--cf2)"}}></i><span className="v disp">₱4.82M</span><span className="l">Active Monthly Payroll</span></div>
                           <div className="card pad kpi"><i data-lucide="activity" style={{color:"var(--cf2)"}}></i><span className="v disp">99.99%</span><span className="l">Perimeter Uptime</span></div>
                           <div className="card pad kpi"><i data-lucide="zap" style={{color:"var(--cf2)"}}></i><span className="v disp">41 ms</span><span className="l">Edge Network Latency</span></div>
@@ -324,14 +325,19 @@ export default {
                         <div className="sub">Static profile mappings augmented with live datasets queried from your Cloudflare D1 Relational SQL Database instance.</div>
                         <div className="card">
                           <table>
-                            <thead><tr><th>Name</th><th>Department</th><th>Email Address</th><th>Government Posture</th></tr></thead>
+                            <thead><tr><th>Name</th><th>Department</th><th>Email Address</th><th>Government ID</th></tr></thead>
                             <tbody>
                               {REAL_DB_RECORDS.map((emp, idx) => (
-                                <tr key={idx}><td><strong>{emp.name}</strong></td><td>{emp.role}</td><td className="mono">{emp.email}</td><td className="mono">{emp.gov_id}</td></tr>
+                                <tr key={idx}>
+                                  <td><strong>{emp.name}</strong></td>
+                                  <td>{emp.role}</td>
+                                  <td className="mono">{emp.email}</td>
+                                  <td className="mono">{maskGovId(emp.gov_id)}</td>
+                                </tr>
                               ))}
-                              {MOCK_EMPLOYEES.map((emp, idx) => (
-                                <tr key={idx}><td>{emp.name}</td><td>{emp.role}</td><td className="mono">{emp.email}</td><td className="mono">{emp.gov_id}</td></tr>
-                              ))}
+                              {REAL_DB_RECORDS.length === 0 && (
+                                <tr><td colSpan="4" style={{textAlign:"center", color:"var(--faint)", padding:20}}>No items written to the database yet.</td></tr>
+                              )}
                             </tbody>
                           </table>
                         </div>
@@ -423,7 +429,7 @@ export default {
                                 <div className="form-group"><label>Full Employee Name</label><input type="text" name="name" required placeholder="e.g. Sarah Connor" /></div>
                                 <div className="form-group"><label>Corporate Assignment Role</label><input type="text" name="role" required placeholder="e.g. Threat Analyst" /></div>
                                 <div className="form-group"><label>Corporate Registry Email</label><input type="email" name="email" required placeholder={"name@" + BASE_DOMAIN_NAME} /></div>
-                                <div className="form-group"><label>Government Tracking Identifier</label><input type="text" name="gov_id" required placeholder="123-45-6789" /></div>
+                                <div className="form-group"><label>Government ID</label><input type="text" name="gov_id" required placeholder="S1234567A" /></div>
                                 <div className="form-group"><label>Contract Upload Payload (R2 Bucket)</label><input type="file" name="contract" required style={{border:"none", background:"none", padding:0}} /></div>
                                 <button type="submit" className="btn primary" style={{width:"100%", justifyContent:"center"}}>Commit Secure Cloud Write</button>
                               </form>
