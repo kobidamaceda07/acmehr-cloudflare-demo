@@ -448,9 +448,11 @@ export default {
                                   {REAL_DB_RECORDS.map((emp, index) => (
                                     <tr key={index}>
                                       <td><span className="mono" style={{color:"var(--cyan)"}}>{emp.id}</span></td>
-                                      <td>strong>{emp.name}</strong></td>
+                                      {/* 🛠️ TYPO FIXED: Added missing '<' bracket to strong tag */}
+                                      <td><strong>{emp.name}</strong></td>
                                       <td>{emp.role}</td>
-                                      <td><span className="mono" style={{fontSize:11, color:"var(--cf2)"}}>📎 R2://{emp.doc_name.substring(0,14)}...</span></td>
+                                      {/* 🛡️ SECURITY ADDED: Handled edge case where doc_name could be empty or null to prevent substring failure */}
+                                      <td><span className="mono" style={{fontSize:11, color:"var(--cf2)"}}>📎 R2://{emp.doc_name ? emp.doc_name.substring(0,14) : "No-contract"}...</span></td>
                                     </tr>
                                   ))}
                                   {REAL_DB_RECORDS.length === 0 && (
@@ -519,7 +521,6 @@ export default {
                             <div className="pops">
                               {Array.from({ length: 48 }).map((_, i) => <span className="pop" key={i} />)}
                             </div>
-                            {/* 🛠️ TYPO FIXED: Restored valid style assignment syntax */}
                             <p style={{fontSize:12, color: "var(--muted)", marginTop:15, textAlign:"left"}}>Workers execute logic directly inside border router memories worldwide. Intelligent path optimization steers dynamic infrastructure connections between nodes instantly.</p>
                           </div>
 
