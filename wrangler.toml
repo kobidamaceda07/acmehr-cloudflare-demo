@@ -23,7 +23,7 @@ zone_name = "kobimaceda.com"
 [[d1_databases]]
 binding = "DB"
 database_name = "acmehr-db"
-database_id = "PASTE_YOUR_FIRST_TENANT_D1_DATABASE_ID_HERE"
+database_id = "fadb9c42-93a0-42da-866d-71ed506ceedc"
 
 # =========================================================================
 # 🧪 PROFILE B: TAN ENVIRONMENT (kobitan.work)
