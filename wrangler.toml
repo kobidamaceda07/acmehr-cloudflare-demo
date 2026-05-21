@@ -42,4 +42,4 @@ zone_name = "kobitan.work"
 [[env.tan.d1_databases]]
 binding = "DB"
 database_name = "acmehr-db"
-database_id = "PASTE_YOUR_SECOND_TENANT_D1_DATABASE_ID_HERE"
+database_id = "03d73537-3e8b-4332-9fc8-c23876c5faac"
