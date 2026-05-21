@@ -1,17 +1,38 @@
-name: Deploy to Cloudflare
+name: Deploy Multi-Tenant Stack
 on:
   push:
     branches: [ main ]
+  workflow_dispatch: # ✨ This adds a manual trigger button with a dropdown selection menu!
+    inputs:
+      tenant:
+        description: 'Select the destination Cloudflare Tenant target:'
+        required: true
+        default: 'maceda'
+        type: choice
+        options:
+          - maceda
+          - tan
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
+    # Dynamically switches vaults based on your dropdown selection or fallback push
+    environment: ${{ github.event.inputs.tenant || 'maceda' }}-production
+    
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          
       - run: npm install
-      - uses: cloudflare/wrangler-action@v3
+      
+      - name: Publish to Selected Cloudflare Edge Instance
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Pass the execution environment profile flag directly down to wrangler
+          command: deploy ${{ (github.event.inputs.tenant == 'tan' || (github.event.inputs.tenant == '' && contains(github.event.head_commit.message, 'deploy-tan'))) && '--env tan' || '' }}
