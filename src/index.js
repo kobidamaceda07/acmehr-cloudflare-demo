@@ -261,7 +261,21 @@ export default {
                     <button className={"nav " + (view === "payroll" ? "on" : "")} onClick={() => setView("payroll")}><i data-lucide="wallet"></i> Payroll Runs</button>
                     <div className="navhead">Protect Tier</div>
                     <button className={"nav " + (view === "askhr" ? "on" : "")} onClick={() => setView("askhr")}><i data-lucide="bot"></i> AskHR Assistant</button>
-                    <button className={"nav " + (view === "admin" ? "on" : "")} onClick={() => setView("admin")}><i data-lucide="lock"></i> Admin Console</button>
+                    
+                    {/* 🚀 IDENTITY RESOLVING RE-ROUTING ACTION TRIGGER */}
+                    <button 
+                      className={"nav " + (view === "admin" ? "on" : "")} 
+                      onClick={() => {
+                        if (!IS_ADMIN_URL) {
+                          window.location.href = "https://admin." + BASE_DOMAIN_NAME;
+                        } else {
+                          setView("admin");
+                        }
+                      }}
+                    >
+                      <i data-lucide="lock"></i> Admin Console
+                    </button>
+
                     <button className={"nav " + (view === "security" ? "on" : "")} onClick={() => setView("security")}><i data-lucide="shield-check"></i> Security / WAF</button>
                     <div className="navhead">Scale Tier</div>
                     <button className={"nav " + (view === "perf" ? "on" : "")} onClick={() => setView("perf")}><i data-lucide="gauge"></i> Performance</button>
@@ -313,10 +327,10 @@ export default {
                             <thead><tr><th>Name</th><th>Department</th><th>Email Address</th><th>Government Posture</th></tr></thead>
                             <tbody>
                               {REAL_DB_RECORDS.map((emp, idx) => (
-                                <tr key={idx}><td><strong>{emp.name}</strong></td><td>{emp.role}</td><td class="mono">{emp.email}</td><td class="mono">{emp.gov_id}</td></tr>
+                                <tr key={idx}><td><strong>{emp.name}</strong></td><td>{emp.role}</td><td className="mono">{emp.email}</td><td className="mono">{emp.gov_id}</td></tr>
                               ))}
                               {MOCK_EMPLOYEES.map((emp, idx) => (
-                                <tr key={idx}><td>{emp.name}</td><td>{emp.role}</td><td class="mono">{emp.email}</td><td class="mono">{emp.gov_id}</td></tr>
+                                <tr key={idx}><td>{emp.name}</td><td>{emp.role}</td><td className="mono">{emp.email}</td><td className="mono">{emp.gov_id}</td></tr>
                               ))}
                             </tbody>
                           </table>
@@ -333,8 +347,8 @@ export default {
                           <table>
                             <thead><tr><th>Billing Period</th><th>Total Disbursed</th><th>Headcount Verified</th><th>Distribution</th></tr></thead>
                             <tbody>
-                              <tr><td>May 2026</td><td class="mono">₱ 4,820,000</td><td>182</td><td>Bank Transfer Channel</td></tr>
-                              <tr><td>April 2026</td><td class="mono">₱ 4,710,500</td><td>180</td><td>Bank Transfer Channel</td></tr>
+                              <tr><td>May 2026</td><td className="mono">₱ 4,820,000</td><td>182</td><td>Bank Transfer Channel</td></tr>
+                              <tr><td>April 2026</td><td className="mono">₱ 4,710,500</td><td>180</td><td>Bank Transfer Channel</td></tr>
                             </tbody>
                           </table>
                         </div>
@@ -367,16 +381,16 @@ export default {
                             </div>
                           </div>
                           <div className="card" style={{display:"flex", flexDirection:"column"}}>
-                            <div className="pad" style={{borderBottom:"1px solid var(--line)", display:"flex", justifyBetween:"space-between", alignItems:"center"}}>
-                              <div style={{textAlign:"left"}}><div className="disp" style={{fontSize:14}}>Gateway Stream Log</div><div class="mono" style={{fontSize:10, color:"var(--faint)"}}>askhr/live-telemetry</div></div>
+                            <div className="pad" style={{borderBottom:"1px solid var(--line)", display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+                              <div style={{textAlign:"left"}}><div className="disp" style={{fontSize:14}}>Gateway Stream Log</div><div className="mono" style={{fontSize:10, color:"var(--faint)"}}>askhr/live-telemetry</div></div>
                             </div>
                             <div className="log">
                               {logs.length === 0 && <div style={{padding:16, color:"var(--faint)", fontSize:12}}>Awaiting prompts... Live network inspection records will map inside this view panel real-time.</div>}
                               {logs.map((lg, i) => (
                                 <div className="logrow" key={i}>
-                                  <div className="top2"><span className={"tag " + lg.tag}>{lg.label}</span><span class="mono" style={{color:"var(--faint)"}}>{lg.time}</span></div>
+                                  <div className="top2"><span className={"tag " + lg.tag}>{lg.label}</span><span className="mono" style={{color:"var(--faint)"}}>{lg.time}</span></div>
                                   <div style={{color:"var(--muted)", margin:"2px 0"}}>{lg.detail}</div>
-                                  <div class="mono" style={{color:"var(--faint)", fontSize:10}}>{lg.model} • {lg.tokens} Tok • {lg.lat}</div>
+                                  <div className="mono" style={{color:"var(--faint)", fontSize:10}}>{lg.model} • {lg.tokens} Tok • {lg.lat}</div>
                                 </div>
                               ))}
                             </div>
@@ -404,7 +418,7 @@ export default {
                           <div className="sub">Direct pipeline execution interfaces connected to your physical data storage systems.</div>
                           <div className="grid" style={{gridTemplateColumns: "1fr 1.5fr"}}>
                             <div className="card pad">
-                              <h3 class="disp" style={{color:"var(--cf2)", marginBottom:15}}>Onboard Personnel</h3>
+                              <h3 className="disp" style={{color:"var(--cf2)", marginBottom:15}}>Onboard Personnel</h3>
                               <form action="/api/admin/onboard" method="POST" enctype="multipart/form-data">
                                 <div className="form-group"><label>Full Employee Name</label><input type="text" name="name" required placeholder="e.g. Sarah Connor" /></div>
                                 <div className="form-group"><label>Corporate Assignment Role</label><input type="text" name="role" required placeholder="e.g. Threat Analyst" /></div>
@@ -415,20 +429,20 @@ export default {
                               </form>
                             </div>
                             <div className="card pad">
-                              <h3 class="disp" style={{color:"var(--cf2)", marginBottom:15}}>Live Relational SQL DB Ledger (D1 Sync)</h3>
+                              <h3 className="disp" style={{color:"var(--cf2)", marginBottom:15}}>Live Relational SQL DB Ledger (D1 Sync)</h3>
                               <table>
                                 <thead><tr><th>ID</th><th>Personnel Name</th><th>Corporate Assignment</th><th>Object Storage Reference</th></tr></thead>
                                 <tbody>
                                   {REAL_DB_RECORDS.map((emp, index) => (
                                     <tr key={index}>
-                                      <td><span class="mono" style={{color:"var(--cyan)"}}>{emp.id}</span></td>
+                                      <td><span className="mono" style={{color:"var(--cyan)"}}>{emp.id}</span></td>
                                       <td><strong>{emp.name}</strong></td>
                                       <td>{emp.role}</td>
-                                      <td><span class="mono" style={{fontSize:11, color:"var(--cf2)"}}>📎 R2://{emp.doc_name.substring(0,14)}...</span></td>
+                                      <td><span className="mono" style={{fontSize:11, color:"var(--cf2)"}}>📎 R2://{emp.doc_name.substring(0,14)}...</span></td>
                                     </tr>
                                   ))}
                                   {REAL_DB_RECORDS.length === 0 && (
-                                    <tr><td colSpan="3" style={{textAlign:"center", color:"var(--faint)", padding:20}}>No items written to the D1 database yet. Submit the form to run a live write execution.</td></tr>
+                                    <tr><td colSpan="4" style={{textAlign:"center", color:"var(--faint)", padding:20}}>No items written to the D1 database yet. Submit the form to run a live write execution.</td></tr>
                                   )}
                                 </tbody>
                               </table>
@@ -438,16 +452,15 @@ export default {
                       )
                     )}
 
-                    {/* VIEW: SECURITY (RESTORED BEAUTIFUL ORIGINAL COMPONENT CODE) */}
+                    {/* VIEW: SECURITY */}
                     {view === "security" && (
                       <div>
                         <h1 className="page disp">Security Event Analytics Dashboard</h1>
                         <div className="sub">Front-door threat filtering metrics executed live across Layer 7 protocol filters.</div>
                         <div className="grid" style={{gridTemplateColumns:"1fr 1.3fr"}}>
                           
-                          {/* Left Panel: Restored active policies */}
                           <div className="card pad" style={{textAlign:"left"}}>
-                            <h3 class="disp" style={{marginBottom:15, color:"var(--cf2)"}}>Hardened Edge Base Policies</h3>
+                            <h3 className="disp" style={{marginBottom:15, color:"var(--cf2)"}}>Hardened Edge Base Policies</h3>
                             <div style={{display:"flex", flexDirection:"column", gap:10, fontSize:13, borderBottom:"1px solid var(--line)", paddingBottom:15, margin:"15px 0"}}>
                               <div>🟩 SSL/TLS Cryptographic Status: Full (Strict) Enforced</div>
                               <div>🟩 OWASP Core Vulnerability Signature Shielding Rulesets: ON</div>
@@ -459,14 +472,13 @@ export default {
                             </button>
                           </div>
 
-                          {/* Right Panel: Simulation output log stream */}
                           <div className="card" style={{display:"flex", flexDirection:"column"}}>
-                            <div className="pad" style={{borderBottom:"1px solid var(--line)", textAlign:"left"}}><div class="disp" style={{fontSize:14}}>Live WAF Intercept Telemetry Alerts</div></div>
+                            <div className="pad" style={{borderBottom:"1px solid var(--line)", textAlign:"left"}}><div className="disp" style={{fontSize:14}}>Live WAF Intercept Telemetry Alerts</div></div>
                             <div style={{height:300, overflowY:"auto"}}>
                               {secEvents.length === 0 && <div style={{padding:20, color:"var(--faint)", fontSize:12.5, textAlign:"left"}}>Click the left button on stage to simulate and challenge the perimeter live threat filters.</div>}
                               {secEvents.map((evt, i) => (
                                 <div className="logrow" key={i}>
-                                  <div className="top2"><span className={"tag " + evt.tag}>{evt.type} • {evt.act}</span><span class="mono" style={{color:"var(--faint)"}}>{evt.t}</span></div>
+                                  <div className="top2"><span className={"tag " + evt.tag}>{evt.type} • {evt.act}</span><span className="mono" style={{color:"var(--faint)"}}>{evt.t}</span></div>
                                   <div style={{fontSize:12, color:"var(--muted)"}}>{evt.desc}</div>
                                 </div>
                               ))}
@@ -477,7 +489,7 @@ export default {
                       </div>
                     )}
 
-                    {/* VIEW: PERFORMANCE (RESTORED BEAUTIFUL ORIGINAL COMPONENT CODE) */}
+                    {/* VIEW: PERFORMANCE */}
                     {view === "perf" && (
                       <div>
                         <h1 className="page disp">Performance, Telemetry & Spend Metrics</h1>
@@ -490,7 +502,6 @@ export default {
                         </div>
                         <div className="grid" style={{gridTemplateColumns:"1fr 1fr", marginTop:16}}>
                           
-                          {/* Left Panel: Restored pulse graph array node points */}
                           <div className="card pad">
                             <div className="disp" style={{fontSize:15, marginBottom:12, textAlign:"left"}}>Distributed Runtime Edge Mesh Nodes</div>
                             <div className="pops">
@@ -499,15 +510,14 @@ export default {
                             <p style={{fontSize:12, color:"var(--muted)", marginTop:15, textAlign:"left"}}>Workers execute logic directly inside border router memories worldwide. Intelligent path optimization steers dynamic infrastructure connections between nodes instantly.</p>
                           </div>
 
-                          {/* Right Panel: Restored distribution progress metrics */}
                           <div className="card pad" style={{textAlign:"left"}}>
                             <div className="disp" style={{fontSize:15, marginBottom:10}}>Edge Delivery Source Proportions</div>
                             <div style={{marginTop:12}}>
-                              <div style={{display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:4}}><span>Static File Delivery Cache Rules</span><span style={{color:"var(--muted)"}}>94%</span></div>
+                              <div style={{display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:4}}><span>Static File Delivery Cache Rules</span><span className="mono" style={{color:"var(--muted)"}}>94%</span></div>
                               <div className="bar"><i style={{width:"94%"}} /></div>
                             </div>
                             <div style={{marginTop:12}}>
-                              <div style={{display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:4}}><span>AI Gateway Semantic Query Caching</span><span style={{color:"var(--muted)"}}>38%</span></div>
+                              <div style={{display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:4}}><span>AI Gateway Semantic Query Caching</span><span className="mono" style={{color:"var(--muted)"}}>38%</span></div>
                               <div className="bar"><i style={{width:"38%"}} /></div>
                             </div>
                           </div>
