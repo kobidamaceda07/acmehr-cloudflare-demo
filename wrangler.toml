@@ -2,6 +2,9 @@ name = "acmehr-chatbot"
 main = "src/index.js"
 compatibility_date = "2026-05-21"
 
+# =========================================================================
+# 🛑 ENVIRONMENT A: DEFAULT / MACEDA (kobimaceda.com)
+# =========================================================================
 [ai]
 binding = "AI"
 
@@ -9,9 +12,6 @@ binding = "AI"
 binding = "DOCS"
 bucket_name = "acmehr-docs"
 
-# =========================================================================
-# 🛑 PROFILE A: DEFAULT ENVIRONMENT (kobimaceda.com)
-# =========================================================================
 [[routes]]
 pattern = "hr.kobimaceda.com/*"
 zone_name = "kobimaceda.com"
@@ -26,10 +26,13 @@ database_name = "acmehr-db"
 database_id = "fadb9c42-93a0-42da-866d-71ed506ceedc"
 
 # =========================================================================
-# 🧪 PROFILE B: TAN ENVIRONMENT (kobitan.work)
+# 🧪 ENVIRONMENT B: TAN (kobitan.work)
 # =========================================================================
 [env.tan]
 name = "acmehr-chatbot-tan"
+
+# Explicitly bind the AI hardware to the Tan environment
+ai = { binding = "AI" }
 
 [[env.tan.routes]]
 pattern = "hr.kobitan.work/*"
@@ -39,6 +42,12 @@ zone_name = "kobitan.work"
 pattern = "admin.kobitan.work/*"
 zone_name = "kobitan.work"
 
+# Explicitly bind the R2 file vault to the Tan environment
+[[env.tan.r2_buckets]]
+binding = "DOCS"
+bucket_name = "acmehr-docs"
+
+# Explicitly bind the D1 database instance to the Tan environment
 [[env.tan.d1_databases]]
 binding = "DB"
 database_name = "acmehr-db"
