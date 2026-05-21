@@ -77,8 +77,8 @@ export default {
     // SYSTEM TRACK B: RENDERING FRONTEND LAYOUTS
     // ----------------------------------------------------
 
-    // 🔒 PLATFORM INTERCEPT: If navigating to admin.hr.kobimaceda.com, render Admin UI
-    if (url.hostname === "admin.hr.kobimaceda.com") {
+    // 🔒 PLATFORM INTERCEPT: If navigating to admin.kobimaceda.com, render Admin UI
+    if (url.hostname === "admin.kobimaceda.com") {
       
       // Query Cloudflare D1 Database live to read all employees
       let employees = [];
@@ -113,7 +113,7 @@ export default {
             <header>
               <div>
                 <h1>🔒 AcmeHR Secure Admin Console</h1>
-                <p style="color: #64748b; font-size: 14px;">Scope: <code>admin.hr.kobimaceda.com</code></p>
+                <p style="color: #64748b; font-size: 14px;">Scope: <code>admin.kobimaceda.com</code></p>
               </div>
               <span class="badge">🛡️ ZTNA ENFORCED</span>
             </header>
@@ -210,7 +210,7 @@ export default {
           <div class="logo">🔮 AcmeHR</div>
           <ul class="nav-links">
             <li><a href="#" class="nav-item active">📊 Dashboard</a></li>
-            <li><a href="https://admin.hr.kobimaceda.com" class="nav-item admin-btn">🔒 Admin Console</a></li>
+            <li><a href="https://admin.kobimaceda.com" class="nav-item admin-btn">🔒 Admin Console</a></li>
           </ul>
         </div>
         <div class="main-content">
