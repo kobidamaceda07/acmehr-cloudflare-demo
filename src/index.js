@@ -370,7 +370,7 @@ export default {
                     {/* VIEW: ASKHR */}
                     {view === "askhr" && (
                       <div>
-                        <h1 className="page disp">AskHR Assistant Firewall Workspace</h1>
+                        <h1 className="page disp">AskHR Assistant</h1>
                         <div className="sub">Live model telemetry channel proxying strings through your dashboard gateway configuration interface.</div>
                         <div className="chatwrap">
                           <div className="card" style={{display:"flex", flexDirection:"column"}}>
