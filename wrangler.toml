@@ -2,7 +2,16 @@ name = "acmehr-chatbot"
 main = "src/index.js"
 compatibility_date = "2026-05-21"
 
-# 🌐 Open both the employee portal and admin console routes simultaneously
+[ai]
+binding = "AI"
+
+[[r2_buckets]]
+binding = "DOCS"
+bucket_name = "acmehr-docs"
+
+# =========================================================================
+# 🛑 PROFILE A: DEFAULT ENVIRONMENT (kobimaceda.com)
+# =========================================================================
 [[routes]]
 pattern = "hr.kobimaceda.com/*"
 zone_name = "kobimaceda.com"
@@ -11,16 +20,26 @@ zone_name = "kobimaceda.com"
 pattern = "admin.kobimaceda.com/*"
 zone_name = "kobimaceda.com"
 
-[ai]
-binding = "AI"
-
-# 🗄️ Link the R2 Storage Bucket
-[[r2_buckets]]
-binding = "DOCS"
-bucket_name = "acmehr-docs"
-
-# 📊 Link the D1 Relational Database
 [[d1_databases]]
 binding = "DB"
 database_name = "acmehr-db"
-database_id = "fadb9c42-93a0-42da-866d-71ed506ceedc"
+database_id = "PASTE_YOUR_FIRST_TENANT_D1_DATABASE_ID_HERE"
+
+# =========================================================================
+# 🧪 PROFILE B: TAN ENVIRONMENT (kobitan.work)
+# =========================================================================
+[env.tan]
+name = "acmehr-chatbot-tan"
+
+[[env.tan.routes]]
+pattern = "hr.kobitan.work/*"
+zone_name = "kobitan.work"
+
+[[env.tan.routes]]
+pattern = "admin.kobitan.work/*"
+zone_name = "kobitan.work"
+
+[[env.tan.d1_databases]]
+binding = "DB"
+database_name = "acmehr-db"
+database_id = "PASTE_YOUR_SECOND_TENANT_D1_DATABASE_ID_HERE"
