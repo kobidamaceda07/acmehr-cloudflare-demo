@@ -2,9 +2,25 @@ name = "acmehr-chatbot"
 main = "src/index.js"
 compatibility_date = "2026-05-21"
 
+# 🌐 Open both the employee portal and admin console routes simultaneously
 [[routes]]
 pattern = "hr.kobimaceda.com/*"
 zone_name = "kobimaceda.com"
 
+[[routes]]
+pattern = "admin.hr.kobimaceda.com/*"
+zone_name = "kobimaceda.com"
+
 [ai]
 binding = "AI"
+
+# 🗄️ Link the R2 Storage Bucket
+[[r2_buckets]]
+binding = "DOCS"
+bucket_name = "acmehr-docs"
+
+# 📊 Link the D1 Relational Database
+[[d1_databases]]
+binding = "DB"
+database_name = "acmehr-db"
+database_id = "PASTE_YOUR_REAL_D1_DATABASE_ID_HERE"
